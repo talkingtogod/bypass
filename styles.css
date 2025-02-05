@@ -1,0 +1,58 @@
+/* General Page Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px;
+}
+
+/* Input Styling */
+.input-box input {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Output Box */
+.output-box {
+    background: #f9f9f9;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 2px dashed #aaa;
+    transition: all 0.2s ease;
+}
+
+/* Hover and Touch Effects */
+.output-box:hover, .output-box:active {
+    background: #e3e3e3;
+    border-color: #666;
+}
+
+/* Copy Message */
+.copy-message {
+    color: green;
+    font-size: 14px;
+    margin-top: 10px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
