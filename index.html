@@ -3,23 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoMod Bypasser</title>
+    <title>Slurs Bypass</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
     <div class="container">
-        <h1>Discord AutoMod Bypasser</h1>
-        <p class="subtitle">Made by <strong>@midleg</strong></p>
+        <h1>Discord AutoMod Bypass</h1>
+        <p class="description">Made with ❤️ by @midleg</p>
         
-        <div class="input-box">
-            <input type="text" id="inputWord" placeholder="Enter a word..." oninput="modifyText()">
-        </div>
-        
-        <div class="output-box" onclick="copyText()">
-            <p id="outputText">Your bypassed word will appear here...</p>
+        <div class="input-container">
+            <input type="text" id="inputWord" placeholder="Type a word..." oninput="modifyText()">
+            <button class="change-btn" onclick="changeLetter()">Change Letter</button>
         </div>
 
-        <p class="copy-message" id="copyMessage">Copied!</p>
+        <div class="output-container">
+            <p id="outputText">Your bypassed text will appear here...</p>
+            <p id="copyMessage" class="copy-message">Copied!</p>
+        </div>
     </div>
 
     <script src="func.js"></script>
