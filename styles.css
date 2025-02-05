@@ -1,58 +1,107 @@
-/* General Page Styling */
-body {
+/* Global styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f0f4f8;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f4f4f4;
-    margin: 0;
+    text-align: center;
+    color: #333;
 }
 
+/* Main container */
 .container {
-    text-align: center;
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 400px;
-}
-
-/* Input Styling */
-.input-box input {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
+    max-width: 500px;
+    padding: 30px;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #0066cc;
+}
+
+.description {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.input-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input {
     padding: 10px;
-    font-size: 18px;
+    font-size: 1rem;
     border: 2px solid #ddd;
-    border-radius: 8px;
-    text-align: center;
+    border-radius: 5px;
+    width: 200px;
 }
 
-/* Output Box */
-.output-box {
-    background: #f9f9f9;
-    padding: 12px;
-    border-radius: 8px;
-    margin-top: 15px;
-    font-size: 20px;
-    font-weight: bold;
+button.change-btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-    border: 2px dashed #aaa;
-    transition: all 0.2s ease;
+    transition: background-color 0.3s ease;
 }
 
-/* Hover and Touch Effects */
-.output-box:hover, .output-box:active {
-    background: #e3e3e3;
-    border-color: #666;
+button.change-btn:hover {
+    background-color: #0056b3;
 }
 
-/* Copy Message */
-.copy-message {
-    color: green;
-    font-size: 14px;
-    margin-top: 10px;
+/* Output container */
+.output-container {
+    margin-top: 20px;
+}
+
+#outputText {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#copyMessage {
+    font-size: 1rem;
+    color: #28a745;
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.5s ease;
+}
+
+/* For mobile screens */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    .input-container {
+        flex-direction: column;
+    }
+
+    input {
+        width: 100%;
+    }
 }
