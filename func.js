@@ -70,7 +70,8 @@ function changeLetter() {
 // Function to copy text when clicked
 function copyText() {
     let text = document.getElementById("outputText").textContent;
-    
+
+    // Ensure there's text to copy
     if (text !== "Your modified text will appear here...") {
         navigator.clipboard.writeText(text).then(() => {
             let copyMessage = document.getElementById("copyMessage");
@@ -79,3 +80,6 @@ function copyText() {
         });
     }
 }
+
+// Add event listener for clicking the output text to copy it
+document.getElementById("outputText").addEventListener("click", copyText);
