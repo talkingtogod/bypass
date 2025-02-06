@@ -44,28 +44,81 @@ function modifyText() {
 }
 
 
-// Function to change the modified letter each time the button is clicked
-function changeLetter() {
-    if (!lastWord) return;
-    
-    let letters = lastWord.split('');
+// Function to handle toggle change
+document.getElementById("replaceMultiLetters").addEventListener("change", function() {
+    let inputWord = document.getElementById("inputWord").value;
+    if (this.checked && isTwoWords(inputWord)) {
+        // Apply the multi-letter replacement when the toggle is checked and the input has two words
+        let modifiedWord = replaceMultiLettersInWords(inputWord);
+        document.getElementById("outputText").textContent = modifiedWord;
+    } else {
+        // If toggle is unchecked or the input is not two words, generate normal output
+        modifyText();
+    }
+});
+
+// Function to modify the text (without multi-letter replace)
+function modifyText() {
+    let input = document.getElementById("inputWord").value;
+    if (!input) return;
+
+    lastWord = input;
+    let letters = input.split('');
+
+    // Find all valid letters we can replace
     let modifiableIndexes = letters
         .map((char, index) => letterMap[char] ? index : -1)
         .filter(index => index !== -1);
 
-    if (modifiableIndexes.length === 0) return;
+    if (modifiableIndexes.length === 0) {
+        document.getElementById("outputText").textContent = input;
+        return;
+    }
 
-    // Move to the next letter in the list
-    let currentIndex = modifiableIndexes.indexOf(modifiedIndex);
-    let nextIndex = (currentIndex + 1) % modifiableIndexes.length;
-    modifiedIndex = modifiableIndexes[nextIndex];
+    // Pick the first letter to modify
+    modifiedIndex = modifiableIndexes[0];
+    letters[modifiedIndex] = letterMap[letters[modifiedIndex]];
 
-    // Replace only the new letter
-    let newLetters = [...letters];
-    newLetters[modifiedIndex] = letterMap[letters[modifiedIndex]];
-
-    modifiedWord = newLetters.join('');
+    modifiedWord = letters.join('');
     document.getElementById("outputText").textContent = modifiedWord;
+}
+
+// Function to replace a random letter in both words if the word contains two words
+function replaceMultiLettersInWords(input) {
+    let words = input.split(' ');
+
+    // Loop over each word and replace a random letter
+    words = words.map(word => replaceRandomLetterInWord(word));
+
+    return words.join(' ');
+}
+
+// Function to replace a random letter in a given word using the letterMap
+function replaceRandomLetterInWord(word) {
+    let modifiableIndexes = [];
+    for (let i = 0; i < word.length; i++) {
+        if (letterMap[word[i]]) {
+            modifiableIndexes.push(i);
+        }
+    }
+
+    if (modifiableIndexes.length === 0) {
+        return word;
+    }
+
+    let randomIndex = modifiableIndexes[Math.floor(Math.random() * modifiableIndexes.length)];
+    let letterToReplace = word[randomIndex];
+    let replacementLetter = letterMap[letterToReplace];
+
+    word = word.substring(0, randomIndex) + replacementLetter + word.substring(randomIndex + 1);
+
+    return word;
+}
+
+// Function to check if the input contains exactly two words
+function isTwoWords(input) {
+    const words = input.trim().split(' ');
+    return words.length === 2;
 }
 
 // Function to copy text when clicked
