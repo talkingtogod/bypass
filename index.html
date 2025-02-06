@@ -31,23 +31,7 @@
         Made with ❤️ by <span class="highlight">Midleg</span> & <span class="highlight">Agim</span>
     </footer>
 
-    <script>
-        function generateBypass() {
-            let input = document.getElementById("bypassInput").value.trim();
-            if (!input) return;
-
-            let bypassedText = input.split("").join("​"); // Adds zero-width spaces
-            document.getElementById("outputBox").textContent = bypassedText;
-        }
-
-        function copyToClipboard() {
-            let text = document.getElementById("outputBox").textContent;
-            navigator.clipboard.writeText(text);
-            let copyMsg = document.getElementById("copyMessage");
-            copyMsg.style.opacity = "1";
-            setTimeout(() => { copyMsg.style.opacity = "0"; }, 1000);
-        }
-    </script>
+    <script src="func.js"></script>
 
 </body>
 </html>
