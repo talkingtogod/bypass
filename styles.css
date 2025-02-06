@@ -143,3 +143,25 @@ button:hover {
     transition: opacity 0.3s;
     color: #6D79FF;
 }
+
+/* Footer Styles */
+footer {
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: #aaa;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+footer:hover {
+    opacity: 1;
+}
+
+.highlight {
+    color: #6D79FF;
+    font-weight: bold;
+}
+
