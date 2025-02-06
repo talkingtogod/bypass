@@ -33,22 +33,47 @@
     </footer>
 
 
-    <script>
+
+        <script>
         // Disable right-click functionality
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault(); // Disables the context menu on right-click
         });
 
-        // Detect when developer tools are opened and crash the page
-        (function() {
-            var devtools = /./;
-            devtools.toString = function() {
-                throw new Error('Developer tools are open!');
-            };
-            setInterval(function() {
-                console.log(devtools);
-            }, 1000);
-        })();
+        // Detect when developer tools are opened and trigger an action (e.g., refresh or redirect)
+        var devtools = { open: false, orientation: undefined };
+
+        Object.defineProperty(devtools, 'open', {
+            get: function() { return this._open; },
+            set: function(value) {
+                this._open = value;
+                if (value) {
+                    alert('Developer Tools are Open!'); // Notify the user
+                    window.location.reload(); // Reload the page to deter inspection
+                }
+            }
+        });
+
+        // Detect if devtools is opened and set the 'open' property to true
+        setInterval(function() {
+            const widthThreshold = window.outerWidth - window.innerWidth > 100;
+            const heightThreshold = window.outerHeight - window.innerHeight > 100;
+
+            if (widthThreshold || heightThreshold) {
+                devtools.open = true;
+            } else {
+                devtools.open = false;
+            }
+        }, 1000);
+
+        // Block view-source or any URL manipulation attempts
+        window.addEventListener('DOMContentLoaded', function() {
+            // Detect 'view-source' and prevent it
+            if (window.location.protocol === 'view-source:') {
+                window.location = 'about:blank'; // Redirect to a blank page if 'view-source' is attempted
+            }
+        });
+        
     </script>
 
     <script src="func.js"></script>
