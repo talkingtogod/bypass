@@ -3,26 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slurs Bypass</title>
+    <title>Unicode Text Modifier</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+    <!-- Background Stars -->
+    <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
+
     <div class="container">
-        <h1>Discord AutoMod Bypass</h1>
-        <p class="description">Made with ❤️ by @midleg</p>
-        
-        <div class="input-container">
-            <input type="text" id="inputWord" placeholder="Type a word..." oninput="modifyText()">
-            <button class="change-btn" onclick="changeLetter()">Change Letter</button>
+        <h1>@midleg's AutoMod Bypass</h1>
+
+        <!-- Input Box -->
+        <div class="group">
+            <input type="text" id="inputWord" placeholder="Enter word" oninput="modifyText()">
+            <label for="inputWord">Enter word</label>
         </div>
 
-        <div class="output-container">
-            <p id="outputText">Your bypassed text will appear here...</p>
-            <p id="copyMessage" class="copy-message">Copied!</p>
-        </div>
+        <!-- Change Letter Button -->
+        <button id="changeLetter" onclick="changeLetter()">Change Letter</button>
+
+        <!-- Output Box (Clickable for Copy) -->
+        <div class="output-box" id="outputText" onclick="copyText()">Your bypassed text will appear here...</div>
+        <p id="copyMessage">Copied!</p>
     </div>
 
     <script src="func.js"></script>
+
 </body>
 </html>
