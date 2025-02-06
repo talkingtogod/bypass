@@ -118,50 +118,6 @@ button:hover {
     background: linear-gradient(45deg, #1a73e8, #135cb3);
 }
 
-/* Add styles for the toggle switch */
-.toggle-container {
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.toggle-label {
-    font-size: 16px;
-    margin-right: 10px;
-    color: white;
-}
-
-.toggle-switch {
-    appearance: none;
-    width: 40px;
-    height: 20px;
-    background-color: #444;
-    border-radius: 50px;
-    position: relative;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.toggle-switch:checked {
-    background-color: #6D79FF;
-}
-
-.toggle-switch:before {
-    content: '';
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 14px;
-    height: 14px;
-    background-color: white;
-    border-radius: 50%;
-    transition: left 0.3s ease;
-}
-
-.toggle-switch:checked:before {
-    left: 23px;
-}
 
 /* Output Box */
 .output-box {
