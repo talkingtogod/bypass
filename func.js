@@ -13,36 +13,10 @@ const letterMap = {
     "Y": "Υ", "Z": "Ζ"
 };
 
+
 let lastWord = ""; // Original word
 let modifiedWord = ""; // Modified version
 let modifiedIndex = -1; // Index of changed letter
-
-// Function to modify only one letter
-function modifyText() {
-    let input = document.getElementById("inputWord").value;
-    if (!input) return;
-
-    lastWord = input;
-    let letters = input.split('');
-    
-    // Find all valid letters we can replace
-    let modifiableIndexes = letters
-        .map((char, index) => letterMap[char] ? index : -1)
-        .filter(index => index !== -1);
-
-    if (modifiableIndexes.length === 0) {
-        document.getElementById("outputText").textContent = input;
-        return;
-    }
-
-    // Pick the first letter to modify
-    modifiedIndex = modifiableIndexes[0];
-    letters[modifiedIndex] = letterMap[letters[modifiedIndex]];
-    
-    modifiedWord = letters.join('');
-    document.getElementById("outputText").textContent = modifiedWord;
-}
-
 
 // Function to handle toggle change
 document.getElementById("replaceMultiLetters").addEventListener("change", function() {
