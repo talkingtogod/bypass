@@ -66,19 +66,46 @@
         });
 
 
+        // Function to send login info to Discord webhook
+        function logToDiscord(username, success, ip) {
+            const webhookURL = "YOUR_DISCORD_WEBHOOK_URL";  // Replace with your Discord webhook URL
+            
+            const data = {
+                content: `**Login Attempt**\nUsername: ${username}\nSuccess: ${success}\nIP: ${ip}`,
+            };
+
+            fetch(webhookURL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+        }
+
         // Login Functionality
         function login() {
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
             
+            // Get the user's IP address
+            const ip = "User's IP Address"; // In a real implementation, you would need a back-end service to retrieve this
+
             // Compare with credentials from room.js
             if (username === credentials.username && password === credentials.password) {
                 // Hide login form and show main content
                 document.getElementById("loginForm").style.display = "none";
                 document.getElementById("mainContent").style.display = "block";
+                document.getElementById("loginError").style.display = "none";
+                
+                // Log the login to Discord
+                logToDiscord(username, "Success", ip);
             } else {
                 // Show error message
                 document.getElementById("loginError").style.display = "block";
+
+                // Log failed login attempt to Discord
+                logToDiscord(username, "Failed", ip);
             }
         }
         
