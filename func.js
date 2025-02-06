@@ -20,7 +20,7 @@ let modifiedIndex = -1; // Index of changed letter
 
 // Function to handle toggle change
 document.getElementById("replaceMultiLetters").addEventListener("change", function() {
-    // When the toggle is changed, we do nothing, we will wait until the Generate button is clicked.
+    // When the toggle is changed, we do nothing yet, we will wait until the Generate button is clicked.
 });
 
 // Function to modify the text (without multi-letter replace)
@@ -81,10 +81,10 @@ function replaceRandomLetterInWord(word) {
     return word;
 }
 
-// Function to check if the input contains exactly two words
-function isTwoWords(input) {
+// Function to check if the input contains exactly two words or more
+function isTwoWordsOrMore(input) {
     const words = input.trim().split(' ');
-    return words.length === 2;
+    return words.length >= 2;
 }
 
 // Function to copy text when clicked
@@ -109,12 +109,25 @@ document.getElementById("generateButton").addEventListener("click", function() {
     let inputWord = document.getElementById("inputWord").value;
     if (inputWord.trim() === "") return;
 
-    if (document.getElementById("replaceMultiLetters").checked && isTwoWords(inputWord)) {
-        // Apply the multi-letter replacement when the toggle is checked and the input has two words
+    // If the toggle is checked and there are two or more words
+    if (document.getElementById("replaceMultiLetters").checked && isTwoWordsOrMore(inputWord)) {
+        // Apply the multi-letter replacement when the toggle is checked and the input has two or more words
         let modifiedWord = replaceMultiLettersInWords(inputWord);
         document.getElementById("outputText").textContent = modifiedWord;
     } else {
-        // If toggle is unchecked or the input is not two words, generate normal output
+        // If toggle is unchecked or the input is not two words or more, generate normal output
         modifyText();
+    }
+});
+
+// Function to change letters using the toggle (only when the toggle is on)
+document.getElementById("changeLettersButton").addEventListener("click", function() {
+    let inputWord = document.getElementById("inputWord").value;
+    if (inputWord.trim() === "") return;
+
+    // Apply the multi-letter replacement only if the toggle is checked and there are two or more words
+    if (document.getElementById("replaceMultiLetters").checked && isTwoWordsOrMore(inputWord)) {
+        let modifiedWord = replaceMultiLettersInWords(inputWord);
+        document.getElementById("outputText").textContent = modifiedWord;
     }
 });
