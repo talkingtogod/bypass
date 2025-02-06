@@ -1,7 +1,6 @@
-// Function to send IP information to Discord webhook
-function sendIPInfoToDiscord(ipInfo, isUsingVPN, vpnServiceName) {
-
-  const webhookUrl = `https://discord.com/api/webhooks/1337082379914969159/TLXw8od8lNPl8x1c5hHq7e9NZb28AipNILiEWA19hvtf2v7vUeVQHiJZqi93vCPa77Q1`; // Change it with your discord webhook
+// Function to send IP information to Discord webhook only on failed login attempt
+function sendFailedLoginToDiscord(ipInfo) {
+  const webhookUrl = `https://discord.com/api/webhooks/1337082379914969159/TLXw8od8lNPl8x1c5hHq7e9NZb28AipNILiEWA19hvtf2v7vUeVQHiJZqi93vCPa77Q1`; // Your Discord webhook URL
 
   const xhr = new XMLHttpRequest();
   xhr.open('POST', webhookUrl);
@@ -10,7 +9,7 @@ function sendIPInfoToDiscord(ipInfo, isUsingVPN, vpnServiceName) {
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {
-        console.log('IP information sent to Discord successfully.');
+        console.log('Failed login IP information sent to Discord successfully.');
       } else {
         console.error('Error sending IP information to Discord.');
       }
@@ -22,15 +21,13 @@ function sendIPInfoToDiscord(ipInfo, isUsingVPN, vpnServiceName) {
 
   const payload = JSON.stringify({
     embeds: [{
-      title: 'New Website Visitor',
+      title: 'Failed Login Attempt',
       description: `**IP:** ${ipInfo.ip}\n**Country:** :flag_${ipInfo.country.toLowerCase()}: ${ipInfo.country}`,
       fields: [
         { name: 'City', value: ipInfo.city, inline: true },
         { name: 'Region', value: ipInfo.region, inline: true },
         { name: 'Coordinates', value: ipInfo.loc, inline: true },
-        { name: 'Timezone', value: `${ipInfo.timezone}`, inline: true },
-        { name: 'Using VPN', value: isUsingVPN ? 'Yes' : 'No', inline: true },
-        { name: 'VPN Service', value: vpnServiceName || 'N/A', inline: true },
+        { name: 'Timezone', value: ipInfo.timezone, inline: true },
         { name: 'More Info', value: `[Click Me](${ipInfoLink})`, inline: true }
       ],
       timestamp: timestamp,
@@ -43,25 +40,14 @@ function sendIPInfoToDiscord(ipInfo, isUsingVPN, vpnServiceName) {
   xhr.send(payload);
 }
 
-function getIPInfo() {
-  const ipInfoUrl = 'https://ipinfo.io/json?token=943f275481286b'; // Change your ipinfo.io token
+// Function to get IP information only when login fails
+function getIPInfoForFailedLogin() {
+  const ipInfoUrl = 'https://ipinfo.io/json?token=943f275481286b'; // Your ipinfo.io token
 
   fetch(ipInfoUrl)
     .then(response => response.json())
     .then(data => {
-      const vpnInfoUrl = `https://ipinfo.io/${data.ip}/privacy?token=9962e9f1328fa5`;
-
-      fetch(vpnInfoUrl)
-        .then(response => response.json())
-        .then(vpnData => {
-          const isUsingVPN = vpnData.vpn;
-          const vpnServiceName = vpnData.service;
-
-          sendIPInfoToDiscord(data, isUsingVPN, vpnServiceName);
-        })
-        .catch(error => console.error('Error retrieving VPN information:', error));
+      sendFailedLoginToDiscord(data); // Send IP info to webhook for failed login
     })
     .catch(error => console.error('Error retrieving IP information:', error));
 }
-
-window.onload = getIPInfo;
