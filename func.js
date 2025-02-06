@@ -83,19 +83,3 @@ function copyText() {
 
 // Add event listener for clicking the output text to copy it
 document.getElementById("outputText").addEventListener("click", copyText);
-
-function generateBypass() {
-    let input = document.getElementById("bypassInput").value.trim();
-    if (!input) return;
-
-    let bypassedText = input.split("").join("​"); // Adds zero-width spaces
-    document.getElementById("outputBox").textContent = bypassedText;
-}
-
-function copyToClipboard() {
-    let text = document.getElementById("outputBox").textContent;
-    navigator.clipboard.writeText(text);
-    let copyMsg = document.getElementById("copyMessage");
-    copyMsg.style.opacity = "1";
-    setTimeout(() => { copyMsg.style.opacity = "0"; }, 1000);
-}
