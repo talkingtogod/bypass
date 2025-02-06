@@ -14,10 +14,6 @@ const letterMap = {
 };
 
 
-let lastWord = ""; // Original word
-let modifiedWord = ""; // Modified version
-let modifiedIndex = -1; // Index of changed letter
-
 // Function to handle toggle change
 document.getElementById("replaceMultiLetters").addEventListener("change", function() {
     // When the toggle is changed, we do nothing yet, we will wait until the Generate button is clicked.
