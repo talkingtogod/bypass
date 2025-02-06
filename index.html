@@ -64,6 +64,23 @@
                 window.location = 'about:blank'; // Redirect to a blank page if 'view-source' is attempted
             }
         });
+
+
+        // Login Functionality
+        function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            
+            // Compare with credentials from room.js
+            if (username === credentials.username && password === credentials.password) {
+                // Hide login form and show main content
+                document.getElementById("loginForm").style.display = "none";
+                document.getElementById("mainContent").style.display = "block";
+            } else {
+                // Show error message
+                document.getElementById("loginError").style.display = "block";
+            }
+        }
         
     </script>
 
