@@ -17,15 +17,15 @@ let lastWord = ""; // Original word
 let modifiedWord = ""; // Modified version
 let modifiedIndex = -1; // Index of changed letter
 
-// Function to modify the first replaceable letter
+// Function to modify only one letter
 function modifyText() {
-    let input = document.getElementById("inputWord").value.trim();
+    let input = document.getElementById("inputWord").value;
     if (!input) return;
 
     lastWord = input;
     let letters = input.split('');
     
-    // Get all modifiable letter indexes
+    // Find all valid letters we can replace
     let modifiableIndexes = letters
         .map((char, index) => letterMap[char] ? index : -1)
         .filter(index => index !== -1);
@@ -35,7 +35,7 @@ function modifyText() {
         return;
     }
 
-    // Pick the first modifiable letter
+    // Pick the first letter to modify
     modifiedIndex = modifiableIndexes[0];
     letters[modifiedIndex] = letterMap[letters[modifiedIndex]];
     
@@ -43,7 +43,7 @@ function modifyText() {
     document.getElementById("outputText").textContent = modifiedWord;
 }
 
-// Function to cycle through modifiable letters
+// Function to change the modified letter each time the button is clicked
 function changeLetter() {
     if (!lastWord) return;
     
@@ -54,12 +54,12 @@ function changeLetter() {
 
     if (modifiableIndexes.length === 0) return;
 
-    // Move to the next letter
+    // Move to the next letter in the list
     let currentIndex = modifiableIndexes.indexOf(modifiedIndex);
     let nextIndex = (currentIndex + 1) % modifiableIndexes.length;
     modifiedIndex = modifiableIndexes[nextIndex];
 
-    // Replace the new letter
+    // Replace only the new letter
     let newLetters = [...letters];
     newLetters[modifiedIndex] = letterMap[letters[modifiedIndex]];
 
@@ -67,11 +67,12 @@ function changeLetter() {
     document.getElementById("outputText").textContent = modifiedWord;
 }
 
-// Function to copy text on click
+// Function to copy text when clicked
 function copyText() {
     let text = document.getElementById("outputText").textContent;
 
-    if (text && text !== "Your modified text will appear here...") {
+    // Ensure there's text to copy
+    if (text !== "Your modified text will appear here...") {
         navigator.clipboard.writeText(text).then(() => {
             let copyMessage = document.getElementById("copyMessage");
             copyMessage.style.opacity = 1;
@@ -80,7 +81,21 @@ function copyText() {
     }
 }
 
-// Wait for DOM to load before adding event listener
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("outputText").addEventListener("click", copyText);
-});
+// Add event listener for clicking the output text to copy it
+document.getElementById("outputText").addEventListener("click", copyText);
+
+function generateBypass() {
+    let input = document.getElementById("bypassInput").value.trim();
+    if (!input) return;
+
+    let bypassedText = input.split("").join("​"); // Adds zero-width spaces
+    document.getElementById("outputBox").textContent = bypassedText;
+}
+
+function copyToClipboard() {
+    let text = document.getElementById("outputBox").textContent;
+    navigator.clipboard.writeText(text);
+    let copyMsg = document.getElementById("copyMessage");
+    copyMsg.style.opacity = "1";
+    setTimeout(() => { copyMsg.style.opacity = "0"; }, 1000);
+}
