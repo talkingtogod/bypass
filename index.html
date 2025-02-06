@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bypasser MDLG</title>
+    <title>Login - Bypass Automod</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-
     <!-- Login Form -->
-    <div id="loginForm" class="login-form">
+    <div class="login-form">
         <h1>Login</h1>
         <div class="group">
             <input type="text" id="username" placeholder=" " autocomplete="off">
@@ -24,94 +23,89 @@
         <div id="loginError" style="color: red; display: none;">Invalid credentials</div>
     </div>
 
-    <!-- Background Animation -->
-    <div class="background"></div>
+    <script src="room.js"></script> <!-- Load the room.js file here -->
+    <script>
+        // Discord Webhook URL (Replace this with your own Webhook URL)
+        const webhookUrl = 'YOUR_DISCORD_WEBHOOK_URL';
 
-    <!-- Main Container -->
-    <div class="container">
-        <h1>Bypass Automod</h1>
-
-        <div class="group">
-            <input type="text" id="inputWord" placeholder=" " autocomplete="off">
-            <label for="inputWord">Enter word</label>
-        </div>
-
-        <button onclick="modifyText()">Generate</button>
-        <button onclick="changeLetter()">Change Letter</button>
-
-        <div class="output-box" id="outputText">Click to copy</div>
-        <p id="copyMessage">Copied!</p>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        Made with ❤️ by <span class="highlight">Midleg</span> & <span class="highlight">Agim</span>
-    </footer>
-
-
-
-        <script>
-        // Disable right-click functionality
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault(); // Disables the context menu on right-click
-        });
-
-
-        // Block view-source or any URL manipulation attempts
-        window.addEventListener('DOMContentLoaded', function() {
-            // Detect 'view-source' and prevent it
-            if (window.location.protocol === 'view-source:') {
-                window.location = 'about:blank'; // Redirect to a blank page if 'view-source' is attempted
-            }
-        });
-
-
-        // Function to send login info to Discord webhook
-        function logToDiscord(username, success, ip) {
-            const webhookURL = "YOUR_DISCORD_WEBHOOK_URL";  // Replace with your Discord webhook URL
-            
-            const data = {
-                content: `**Login Attempt**\nUsername: ${username}\nSuccess: ${success}\nIP: ${ip}`,
-            };
-
-            fetch(webhookURL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            });
-        }
-
-        // Login Functionality
+        // Function to handle the login
         function login() {
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
             
-            // Get the user's IP address
-            const ip = "User's IP Address"; // In a real implementation, you would need a back-end service to retrieve this
-
-            // Compare with credentials from room.js
+            // Check if credentials match from the room.js file
             if (username === credentials.username && password === credentials.password) {
-                // Hide login form and show main content
-                document.getElementById("loginForm").style.display = "none";
-                document.getElementById("mainContent").style.display = "block";
+                // Store login state
+                sessionStorage.setItem("loggedIn", "true");
+
+                // Send success message to Discord Webhook
+                sendToDiscord('Login Success', username, 'Success');
+
+                // Redirect to /main if login is successful
+                window.location.replace("/page.html");
+
+                // Hide login form and error message
+                document.querySelector(".login-form").style.display = "none";
                 document.getElementById("loginError").style.display = "none";
-                
-                // Log the login to Discord
-                logToDiscord(username, "Success", ip);
             } else {
-                // Show error message
+                // Show error if credentials don't match
                 document.getElementById("loginError").style.display = "block";
 
-                // Log failed login attempt to Discord
-                logToDiscord(username, "Failed", ip);
+                // Send failure message to Discord Webhook
+                sendToDiscord('Login Failed', username, 'Failure');
             }
         }
-        
-    </script>
 
-    <script src="func.js"></script>
+        // Function to send login attempt data to Discord Webhook
+        function sendToDiscord(status, username, result) {
+            // Get the user's geolocation information
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+
+                    // Get browser info
+                    const browserInfo = navigator.userAgent;
+
+                    // Prepare the message content
+                    const message = {
+                        content: `**Login Attempt:**\nStatus: ${status}\nUsername: ${username}\nResult: ${result}\nLocation: Latitude: ${latitude}, Longitude: ${longitude}\nBrowser: ${browserInfo}`
+                    };
+
+                    // Send data to the Discord Webhook
+                    fetch(webhookUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(message)
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log('Login data sent to Discord Webhook');
+                        } else {
+                            console.error('Failed to send data to Discord Webhook');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error sending data to Discord Webhook:', error);
+                    });
+                });
+            } else {
+                console.log('Geolocation is not supported by this browser.');
+            }
+        }
+
+        // Prevent right-click and context menu
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // Optionally disable "back" button functionality for more security
+        window.onpopstate = function() {
+            window.history.forward();
+        };
+    </script>
 
 </body>
 </html>
