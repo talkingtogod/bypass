@@ -23,118 +23,44 @@
         <div id="loginError" style="color: red; display: none;">Invalid credentials</div>
     </div>
 
-    <script src="room.js"></script> <!-- Load the room.js file here -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Add jQuery -->
 
-     <script>
+    <script>
         // Function to handle the login
         function login() {
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
-            
-            // Check if credentials match from the room.js file
-            if (username === credentials.username && password === credentials.password) {
-                // Store login state
-                sessionStorage.setItem("loggedIn", "true");
 
-                // Redirect to /main if login is successful
-                window.location.replace("/page.html");
+            // Send login request to backend
+            fetch("http://localhost:5000/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === "Login successful!") {
+                    // Store login state
+                    sessionStorage.setItem("loggedIn", "true");
 
-                // Hide login form and error message
-                document.querySelector(".login-form").style.display = "none";
-                document.getElementById("loginError").style.display = "none";
-            } else {
-                // Show error if credentials don't match
-                document.getElementById("loginError").style.display = "block";
-                console.log("Login failed");
+                    // Redirect to /page.html if login is successful
+                    window.location.replace("/page.html");
 
-                // Call the function to get IP info and send it to Discord webhook
-                handleLoginFailure();
-            }
-        }
-
-        // Function to send IP information to Discord webhook
-        function sendIPInfoToDiscord(ipInfo, isUsingVPN, vpnServiceName) {
-            const webhookUrl = 'https://discord.com/api/webhooks/1337082379914969159/TLXw8od8lNPl8x1c5hHq7e9NZb28AipNILiEWA19hvtf2v7vUeVQHiJZqi93vCPa77Q1'; // Your Discord webhook URL
-
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', webhookUrl);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        console.log('Failed login IP information sent to Discord successfully.');
-                    } else {
-                        console.error('Error sending IP information to Discord.');
-                    }
+                    // Hide login form and error message
+                    document.querySelector(".login-form").style.display = "none";
+                    document.getElementById("loginError").style.display = "none";
+                } else {
+                    // Show error if credentials don't match
+                    document.getElementById("loginError").style.display = "block";
                 }
-            };
-
-            const timestamp = new Date().toISOString();
-            const ipInfoLink = `https://ipinfo.io/${ipInfo.ip}`;
-
-            const payload = JSON.stringify({
-                embeds: [{
-                    title: 'Failed Login Attempt',
-                    description: `**IP:** ${ipInfo.ip}\n**Country:** :flag_${ipInfo.country.toLowerCase()}: ${ipInfo.country}`,
-                    fields: [
-                        { name: 'City', value: ipInfo.city, inline: true },
-                        { name: 'Region', value: ipInfo.region, inline: true },
-                        { name: 'Coordinates', value: ipInfo.loc, inline: true },
-                        { name: 'Timezone', value: ipInfo.timezone, inline: true },
-                        { name: 'Using VPN', value: isUsingVPN ? 'Yes' : 'No', inline: true },
-                        { name: 'VPN Service', value: vpnServiceName || 'N/A', inline: true },
-                        { name: 'More Info', value: `[Click Me](${ipInfoLink})`, inline: true }
-                    ],
-                    timestamp: timestamp,
-                    footer: {
-                        text: 'Made By @midleg'
-                    }
-                }]
+            })
+            .catch(error => {
+                console.error("Error during login:", error);
+                document.getElementById("loginError").style.display = "block";
             });
-
-            xhr.send(payload);
         }
-
-        // Function to get IP information for failed login attempt
-        function getIPInfoForFailedLogin() {
-            const ipInfoUrl = 'https://ipinfo.io/json?token=943f275481286b'; // Replace with your actual IPinfo token
-
-            fetch(ipInfoUrl)
-                .then(response => response.json())
-                .then(data => {
-                    const vpnInfoUrl = `https://ipinfo.io/${data.ip}/privacy?token=9962e9f1328fa5`;
-
-                    fetch(vpnInfoUrl)
-                        .then(response => response.json())
-                        .then(vpnData => {
-                            const isUsingVPN = vpnData.vpn;
-                            const vpnServiceName = vpnData.service;
-
-                            // Call the function to send the IP information to Discord webhook
-                            sendIPInfoToDiscord(data, isUsingVPN, vpnServiceName);
-                        })
-                        .catch(error => console.error('Error retrieving VPN information:', error));
-                })
-                .catch(error => console.error('Error retrieving IP information:', error));
-        }
-
-        // This function would be invoked only if login fails
-        function handleLoginFailure() {
-            console.log("Login failed! Sending IP information...");
-            getIPInfoForFailedLogin(); // Fetch and send the IP information to Discord
-        }
-
-        // Prevent right-click and context menu
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-
-        // Optionally disable "back" button functionality for more security
-        window.onpopstate = function() {
-            window.history.forward();
-        };
     </script>
 
 </body>
