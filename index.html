@@ -3,40 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unicode Text Modifier</title>
+    <title>Bypass Tool</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- Background Stars -->
-    <div class="stars">
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-    </div>
+    <!-- Background Animation -->
+    <div class="background"></div>
 
+    <!-- Main Container -->
     <div class="container">
-        <h1>@midleg's AutoMod Bypass</h1>
+        <h1>Bypass Automod</h1>
 
-        <!-- Input Box -->
         <div class="group">
-            <input type="text" id="inputWord" placeholder="Enter word" oninput="modifyText()">
-            <label for="inputWord">Enter word</label>
+            <input type="text" id="bypassInput" placeholder=" ">
+            <label for="bypassInput">Enter word</label>
         </div>
 
-        <!-- Change Letter Button -->
-        <button id="changeLetter" onclick="changeLetter()">Change Letter</button>
+        <button onclick="generateBypass()">Generate</button>
 
-        <!-- Output Box (Clickable for Copy) -->
-        <div class="output-box" id="outputText" onclick="copyText()">Your bypassed text will appear here...</div>
+        <div class="output-box" id="outputBox" onclick="copyToClipboard()">Click to copy</div>
         <p id="copyMessage">Copied!</p>
     </div>
 
-    <script src="func.js"></script>
+    <!-- Footer -->
+    <footer>
+        Made with ❤️ by <span class="highlight">Midleg</span> & <span class="highlight">Agim</span>
+    </footer>
+
+    <script>
+        function generateBypass() {
+            let input = document.getElementById("bypassInput").value.trim();
+            if (!input) return;
+
+            let bypassedText = input.split("").join("​"); // Adds zero-width spaces
+            document.getElementById("outputBox").textContent = bypassedText;
+        }
+
+        function copyToClipboard() {
+            let text = document.getElementById("outputBox").textContent;
+            navigator.clipboard.writeText(text);
+            let copyMsg = document.getElementById("copyMessage");
+            copyMsg.style.opacity = "1";
+            setTimeout(() => { copyMsg.style.opacity = "0"; }, 1000);
+        }
+    </script>
 
 </body>
 </html>
