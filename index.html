@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bypass Tool</title>
+    <title>Bypasser MDLG</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -16,13 +16,14 @@
         <h1>Bypass Automod</h1>
 
         <div class="group">
-            <input type="text" id="bypassInput" placeholder=" ">
-            <label for="bypassInput">Enter word</label>
+            <input type="text" id="inputWord" placeholder=" " autocomplete="off">
+            <label for="inputWord">Enter word</label>
         </div>
 
-        <button onclick="generateBypass()">Generate</button>
+        <button onclick="modifyText()">Generate</button>
+        <button onclick="changeLetter()">Change Letter</button>
 
-        <div class="output-box" id="outputBox" onclick="copyToClipboard()">Click to copy</div>
+        <div class="output-box" id="outputText">Click to copy</div>
         <p id="copyMessage">Copied!</p>
     </div>
 
