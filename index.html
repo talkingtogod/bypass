@@ -40,31 +40,6 @@
             e.preventDefault(); // Disables the context menu on right-click
         });
 
-        // Detect when developer tools are opened and trigger an action (e.g., refresh or redirect)
-        var devtools = { open: false, orientation: undefined };
-
-        Object.defineProperty(devtools, 'open', {
-            get: function() { return this._open; },
-            set: function(value) {
-                this._open = value;
-                if (value) {
-                    alert('Developer Tools are Open!'); // Notify the user
-                    window.location.reload(); // Reload the page to deter inspection
-                }
-            }
-        });
-
-        // Detect if devtools is opened and set the 'open' property to true
-        setInterval(function() {
-            const widthThreshold = window.outerWidth - window.innerWidth > 100;
-            const heightThreshold = window.outerHeight - window.innerHeight > 100;
-
-            if (widthThreshold || heightThreshold) {
-                devtools.open = true;
-            } else {
-                devtools.open = false;
-            }
-        }, 1000);
 
         // Block view-source or any URL manipulation attempts
         window.addEventListener('DOMContentLoaded', function() {
