@@ -20,15 +20,7 @@ let modifiedIndex = -1; // Index of changed letter
 
 // Function to handle toggle change
 document.getElementById("replaceMultiLetters").addEventListener("change", function() {
-    let inputWord = document.getElementById("inputWord").value;
-    if (this.checked && isTwoWords(inputWord)) {
-        // Apply the multi-letter replacement when the toggle is checked and the input has two words
-        let modifiedWord = replaceMultiLettersInWords(inputWord);
-        document.getElementById("outputText").textContent = modifiedWord;
-    } else {
-        // If toggle is unchecked or the input is not two words, generate normal output
-        modifyText();
-    }
+    // When the toggle is changed, we do nothing, we will wait until the Generate button is clicked.
 });
 
 // Function to modify the text (without multi-letter replace)
@@ -111,3 +103,18 @@ function copyText() {
 
 // Add event listener for clicking the output text to copy it
 document.getElementById("outputText").addEventListener("click", copyText);
+
+// Function to generate text based on toggle state
+document.getElementById("generateButton").addEventListener("click", function() {
+    let inputWord = document.getElementById("inputWord").value;
+    if (inputWord.trim() === "") return;
+
+    if (document.getElementById("replaceMultiLetters").checked && isTwoWords(inputWord)) {
+        // Apply the multi-letter replacement when the toggle is checked and the input has two words
+        let modifiedWord = replaceMultiLettersInWords(inputWord);
+        document.getElementById("outputText").textContent = modifiedWord;
+    } else {
+        // If toggle is unchecked or the input is not two words, generate normal output
+        modifyText();
+    }
+});
