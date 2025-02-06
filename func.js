@@ -1,19 +1,3 @@
-// Unicode lookalikes for every letter (including capitals and lowercase)
-const letterMap = {
-    "a": "а", "b": "Ь", "c": "ϲ", "d": "ԁ", "e": "е", "f": "Ϝ",
-    "g": "ɡ", "h": "һ", "i": "і", "j": "ј", "k": "κ", "l": "ӏ",
-    "m": "м", "n": "ո", "o": "о", "p": "р", "q": "զ", "r": "г",
-    "s": "ѕ", "t": "т", "u": "υ", "v": "ν", "w": "ԝ", "x": "х",
-    "y": "у", "z": "ᴢ",
-
-    "A": "А", "B": "В", "C": "Ϲ", "D": "Ꭰ", "E": "Е", "F": "Ϝ",
-    "G": "Ԍ", "H": "Η", "I": "Ι", "J": "Ј", "K": "Κ", "L": "Ꮮ",
-    "M": "Μ", "N": "Ν", "O": "Ο", "P": "Р", "Q": "Ԛ", "R": "Ꭱ",
-    "S": "Ѕ", "T": "Τ", "U": "Ս", "V": "Ѵ", "W": "Ԝ", "X": "Χ",
-    "Y": "Υ", "Z": "Ζ"
-};
-
-
  // Unicode lookalikes for every letter (including capitals and lowercase)
 const letterMap = {
     "a": "а", "b": "Ь", "c": "ϲ", "d": "ԁ", "e": "е", "f": "Ϝ",
