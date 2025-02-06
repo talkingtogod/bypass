@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bypasser MDLG</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+
+
+    <!-- Background Animation -->
+    <div class="background"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <h1>Bypass Automod</h1>
+
+        <div class="group">
+            <input type="text" id="inputWord" placeholder=" " autocomplete="off">
+            <label for="inputWord">Enter word</label>
+        </div>
+
+        <button onclick="modifyText()">Generate</button>
+        <button onclick="changeLetter()">Change Letter</button>
+
+        <div class="output-box" id="outputText">Click to copy</div>
+        <p id="copyMessage">Copied!</p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        Made with ❤️ by <span class="highlight">Midleg</span> & <span class="highlight">Agim</span>
+    </footer>
+
+
+
+        <script>
+        // Disable right-click functionality
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault(); // Disables the context menu on right-click
+        });
+
+
+        // Block view-source or any URL manipulation attempts
+        window.addEventListener('DOMContentLoaded', function() {
+            // Detect 'view-source' and prevent it
+            if (window.location.protocol === 'view-source:') {
+                window.location = 'about:blank'; // Redirect to a blank page if 'view-source' is attempted
+            }
+        });
+
+
+        
+    </script>
+
+    <script src="func.js"></script>
+
+</body>
+</html>
