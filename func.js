@@ -43,6 +43,46 @@ function modifyText() {
     document.getElementById("outputText").textContent = modifiedWord;
 }
 
+// Function to replace a random letter in both words if the word contains exactly two words
+function replaceMultiLettersInWords(input) {
+    let words = input.split(' ');
+    
+    // Loop over each word and replace a random letter
+    words = words.map(word => replaceRandomLetterInWord(word));
+
+    return words.join(' ');
+}
+
+// Function to replace a random letter in a given word using the letterMap
+function replaceRandomLetterInWord(word) {
+    // Find all letters in the word that can be replaced using the letterMap
+    let modifiableIndexes = [];
+    for (let i = 0; i < word.length; i++) {
+        if (letterMap[word[i]]) {
+            modifiableIndexes.push(i);
+        }
+    }
+
+    if (modifiableIndexes.length === 0) {
+        return word; // Return the word unchanged if no modifiable letters are found
+    }
+
+    // Select a random letter to replace
+    let randomIndex = modifiableIndexes[Math.floor(Math.random() * modifiableIndexes.length)];
+    let letterToReplace = word[randomIndex];
+    let replacementLetter = letterMap[letterToReplace];
+
+    // Replace the letter in the word
+    word = word.substring(0, randomIndex) + replacementLetter + word.substring(randomIndex + 1);
+
+    return word;
+}
+
+// Function to check if the input contains exactly two words
+function isTwoWords(input) {
+    const words = input.trim().split(' ');
+    return words.length === 2;
+}
 // Function to change the modified letter each time the button is clicked
 function changeLetter() {
     if (!lastWord) return;
