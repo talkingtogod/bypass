@@ -28,21 +28,15 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Add jQuery -->
 
     <script>
-        // Discord Webhook URL (Replace this with your own Webhook URL)
-        const webhookUrl = 'https://discord.com/api/webhooks/1337082379914969159/TLXw8od8lNPl8x1c5hHq7e9NZb28AipNILiEWA19hvtf2v7vUeVQHiJZqi93vCPa77Q1';  // Add your Discord webhook URL here
-
         // Function to handle the login
         function login() {
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
-            
+
             // Check if credentials match from the room.js file
             if (username === credentials.username && password === credentials.password) {
                 // Store login state
                 sessionStorage.setItem("loggedIn", "true");
-
-                // Send success message to Discord Webhook with IP and location info
-                sendToDiscord('Login Success', username, 'Success');
 
                 // Redirect to page.html if login is successful
                 window.location.replace("page.html");
@@ -54,39 +48,41 @@
                 // Show error if credentials don't match
                 document.getElementById("loginError").style.display = "block";
 
-                // Send failure message to Discord Webhook with IP and location info
-                sendToDiscord('Login Failed', username, 'Failure');
+                // Log failed login attempt in the console
+                console.log("Login Failed");
+
+                // Fetch IP information and send it to Discord via webhook
+                sendFailedLoginToWebhook();
             }
         }
 
-        // Function to send login attempt data to Discord Webhook with IP Geolocation info
-        function sendToDiscord(status, username, result) {
-            // Get the user's geolocation information using AbstractAPI
+        // Function to fetch user's IP address and send it to the webhook if login failed
+        function sendFailedLoginToWebhook() {
             $.getJSON("https://ipgeolocation.abstractapi.com/v1/?api_key=YOUR_API_KEY", function(data) {
-                var request = new XMLHttpRequest();
-                request.open("POST", webhookUrl);  // Use the webhook URL provided
+                const ipAddress = data.ip_address;
 
-                request.setRequestHeader('Content-type', 'application/json');
-                var t = {
-                    username: "gameJet posta",
-                    avatar_url: "https://www.origo.hu/i/1305/20130509-fogonosz-semion-mogilevich-orosz-maffiozo.jpg", // Avatar image
-                    content: "",
-                    embeds: [{
-                        color: "4700374", // Embed color
-                        title: "Login Attempt",
-                        fields: [
-                            {name: "IP Address of the Visitor", value: data.ip_address},
-                            {name: "City", value: data.city},
-                            {name: "Country", value: data.country},
-                            {name: "Continent", value: data.continent},
-                            {name: "Status", value: status},
-                            {name: "Username", value: username},
-                            {name: "Result", value: result}
-                        ]
-                    }]
-                };
-
-                request.send(JSON.stringify(t)); // Send the data to Discord webhook
+                // Call the webhook to send the IP information
+                fetch('/webhook.js', {  // Ensure the path to your webhook.js is correct
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        ip_address: ipAddress,
+                        status: "Login Failed",
+                        message: "User failed to log in"
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Failed login data sent to the webhook');
+                    } else {
+                        console.error('Failed to send failed login data');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error sending failed login data:', error);
+                });
             });
         }
 
