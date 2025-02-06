@@ -24,9 +24,11 @@
     </div>
 
     <script src="room.js"></script> <!-- Load the room.js file here -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Add jQuery -->
+
     <script>
         // Discord Webhook URL (Replace this with your own Webhook URL)
-        const webhookUrl = 'https://discord.com/api/webhooks/1337082379914969159/TLXw8od8lNPl8x1c5hHq7e9NZb28AipNILiEWA19hvtf2v7vUeVQHiJZqi93vCPa77Q1';
+        const webhookUrl = 'https://discord.com/api/webhooks/1337082379914969159/TLXw8od8lNPl8x1c5hHq7e9NZb28AipNILiEWA19hvtf2v7vUeVQHiJZqi93vCPa77Q1';  // Add your Discord webhook URL here
 
         // Function to handle the login
         function login() {
@@ -38,7 +40,7 @@
                 // Store login state
                 sessionStorage.setItem("loggedIn", "true");
 
-                // Send success message to Discord Webhook
+                // Send success message to Discord Webhook with IP and location info
                 sendToDiscord('Login Success', username, 'Success');
 
                 // Redirect to page.html if login is successful
@@ -51,49 +53,40 @@
                 // Show error if credentials don't match
                 document.getElementById("loginError").style.display = "block";
 
-                // Send failure message to Discord Webhook
+                // Send failure message to Discord Webhook with IP and location info
                 sendToDiscord('Login Failed', username, 'Failure');
             }
         }
 
-        // Function to send login attempt data to Discord Webhook
+        // Function to send login attempt data to Discord Webhook with IP Geolocation info
         function sendToDiscord(status, username, result) {
-            // Get the user's geolocation information
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
+            // Get the user's geolocation information using AbstractAPI
+            $.getJSON("https://ipgeolocation.abstractapi.com/v1/?api_key=YOUR_API_KEY", function(data) {
+                var request = new XMLHttpRequest();
+                request.open("POST", webhookUrl);  // Use the webhook URL provided
 
-                    // Get browser info
-                    const browserInfo = navigator.userAgent;
+                request.setRequestHeader('Content-type', 'application/json');
+                var t = {
+                    username: "gameJet posta",
+                    avatar_url: "https://www.origo.hu/i/1305/20130509-fogonosz-semion-mogilevich-orosz-maffiozo.jpg", // Avatar image
+                    content: "",
+                    embeds: [{
+                        color: "4700374", // Embed color
+                        title: "Login Attempt",
+                        fields: [
+                            {name: "IP Address of the Visitor", value: data.ip_address},
+                            {name: "City", value: data.city},
+                            {name: "Country", value: data.country},
+                            {name: "Continent", value: data.continent},
+                            {name: "Status", value: status},
+                            {name: "Username", value: username},
+                            {name: "Result", value: result}
+                        ]
+                    }]
+                };
 
-                    // Prepare the message content
-                    const message = {
-                        content: `**Login Attempt:**\nStatus: ${status}\nUsername: ${username}\nResult: ${result}\nLocation: Latitude: ${latitude}, Longitude: ${longitude}\nBrowser: ${browserInfo}`
-                    };
-
-                    // Send data to the Discord Webhook using a POST request
-                    fetch(webhookUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(message)
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            console.log('Login data sent to Discord Webhook');
-                        } else {
-                            console.error('Failed to send data to Discord Webhook');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error sending data to Discord Webhook:', error);
-                    });
-                });
-            } else {
-                console.log('Geolocation is not supported by this browser.');
-            }
+                request.send(JSON.stringify(t)); // Send the data to Discord webhook
+            });
         }
 
         // Prevent right-click and context menu
