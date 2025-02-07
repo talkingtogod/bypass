@@ -24,9 +24,7 @@
     </div>
 
     <script src="room.js"></script> <!-- Load the room.js file here -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Add jQuery -->
-
-     <script>
+    <script>
         // Function to handle the login
         function login() {
             const username = document.getElementById("username").value;
@@ -38,7 +36,7 @@
                 sessionStorage.setItem("loggedIn", "true");
 
                 // Redirect to /main if login is successful
-                window.location.replace("/page.html");
+                window.location.replace("/main");
 
                 // Hide login form and error message
                 document.querySelector(".login-form").style.display = "none";
@@ -72,12 +70,12 @@
             };
 
             const timestamp = new Date().toISOString();
-            const ipInfoLink = https://ipinfo.io/${ipInfo.ip};
+            const ipInfoLink = `https://ipinfo.io/${ipInfo.ip}`;
 
             const payload = JSON.stringify({
                 embeds: [{
                     title: 'Failed Login Attempt',
-                    description: **IP:** ${ipInfo.ip}\n**Country:** :flag_${ipInfo.country.toLowerCase()}: ${ipInfo.country},
+                    description: `**IP:** ${ipInfo.ip}\n**Country:** :flag_${ipInfo.country.toLowerCase()}: ${ipInfo.country}`,
                     fields: [
                         { name: 'City', value: ipInfo.city, inline: true },
                         { name: 'Region', value: ipInfo.region, inline: true },
@@ -85,11 +83,11 @@
                         { name: 'Timezone', value: ipInfo.timezone, inline: true },
                         { name: 'Using VPN', value: isUsingVPN ? 'Yes' : 'No', inline: true },
                         { name: 'VPN Service', value: vpnServiceName || 'N/A', inline: true },
-                        { name: 'More Info', value: [Click Me](${ipInfoLink}), inline: true }
+                        { name: 'More Info', value: `[Click Me](${ipInfoLink})`, inline: true }
                     ],
                     timestamp: timestamp,
                     footer: {
-                        text: 'Made By @midleg'
+                        text: 'Made By RealKinG!'
                     }
                 }]
             });
@@ -104,7 +102,7 @@
             fetch(ipInfoUrl)
                 .then(response => response.json())
                 .then(data => {
-                    const vpnInfoUrl = https://ipinfo.io/${data.ip}/privacy?token=9962e9f1328fa5;
+                    const vpnInfoUrl = `https://ipinfo.io/${data.ip}/privacy?token=9962e9f1328fa5`;
 
                     fetch(vpnInfoUrl)
                         .then(response => response.json())
