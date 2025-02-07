@@ -32,29 +32,32 @@
     <!-- Settings Button -->
     <button class="settings-button" onclick="toggleSettings()">Settings</button>
 
+    <!-- Settings Button -->
+    <button class="settings-button" onclick="toggleSettings()">Settings</button>
+
     <!-- Settings Popup Box -->
     <div class="settings-popup" id="settingsPopup">
         <div class="popup-content">
             <button class="close-btn" onclick="toggleSettings()">X</button>
             <h2>Settings</h2>
             <div class="toggle-container">
-                <label for="multi letters">1</label>
+                <label for="toggle1">1</label>
                 <input type="checkbox" id="toggle1" onchange="toggleCheckbox(1)">
             </div>
             <div class="toggle-container">
-                <label for="">2</label>
+                <label for="toggle2">2</label>
                 <input type="checkbox" id="toggle2" onchange="toggleCheckbox(2)">
             </div>
             <div class="toggle-container">
-                <label for="lol">3</label>
+                <label for="toggle3">3</label>
                 <input type="checkbox" id="toggle3" onchange="toggleCheckbox(3)">
             </div>
             <div class="toggle-container">
-                <label for="lol">4</label>
+                <label for="toggle4">4</label>
                 <input type="checkbox" id="toggle4" onchange="toggleCheckbox(4)">
             </div>
             <div class="toggle-container">
-                <label for="lol">5</label>
+                <label for="toggle5">5</label>
                 <input type="checkbox" id="toggle5" onchange="toggleCheckbox(5)">
             </div>
         </div>
@@ -84,6 +87,22 @@
                 window.location = 'about:blank'; // Redirect to a blank page if 'view-source' is attempted
             }
         });
+
+         // Function to toggle the visibility of the settings popup
+        function toggleSettings() {
+            const popup = document.getElementById("settingsPopup");
+            popup.style.display = popup.style.display === "flex" ? "none" : "flex";
+        }
+
+        // Function to handle checkbox toggle
+        function toggleCheckbox(toggleId) {
+            const checkbox = document.getElementById(`toggle${toggleId}`);
+            if (checkbox.checked) {
+                console.log(`[toggle${toggleId}] on`);
+            } else {
+                console.log(`[toggle${toggleId}] off`);
+            }
+        }
 
 
         
