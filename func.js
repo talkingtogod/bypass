@@ -81,5 +81,11 @@ function copyText() {
     }
 }
 
+// Function to toggle the visibility of the settings popu
+function toggleSettings() {
+            const popup = document.getElementById("settingsPopup");
+            popup.style.display = popup.style.display === "flex" ? "none" : "flex";
+}
+
 // Add event listener for clicking the output text to copy it
 document.getElementById("outputText").addEventListener("click", copyText);
